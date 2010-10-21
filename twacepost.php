@@ -50,10 +50,6 @@ function pushToFacebook() {
     curl_setopt($ch, CURLOPT_POSTFIELDS, $postDataStr);
 
     $response = curl_exec($ch);
-
-    $file = fopen('/tmp/debug.txt', 'w');
-    fwrite($file, $response);
-    fclose($file);
 }
 
 # Hook into the publish action and push our post data to facebook
@@ -64,7 +60,9 @@ add_action('publish_post', 'pushToFacebook');
 add_action('admin_menu', 'twace_create_menu');
 
 function twace_create_menu() {
-    add_menu_page('Twacepost Plugin Settings', 'TwacePost Settings', 'administrator', __FILE__, 'twace_settings_page', plugins_url('wp-twacepost/settings_icon.png'));
+    add_menu_page('Twacepost Plugin Settings', 'TwacePost Settings',
+        'administrator', __FILE__, 'twace_settings_page',
+        plugins_url('wp-twacepost/settings_icon.png'));
     add_action( 'admin_init', 'register_twacesettings');
 }
 

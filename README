@@ -1,0 +1,53 @@
+\__   __/|\     /|(  ___  )(  ____ \(  ____ \(  ____ )(  ___  )(  ____ \\__   __/
+   ) (   | )   ( || (   ) || (    \/| (    \/| (    )|| (   ) || (    \/   ) (
+   | |   | | _ | || (___) || |      | (__    | (____)|| |   | || (_____    | |
+   | |   | |( )| ||  ___  || |      |  __)   |  _____)| |   | |(_____  )   | |
+   | |   | || || || (   ) || |      | (      | (      | |   | |      ) |   | |
+   | |   | () () || )   ( || (____/\| (____/\| )      | (___) |/\____) |   | |
+   )_(   (_______)|/     \|(_______/(_______/|/       (_______)\_______)   )_(
+================================================================================
+
+Post your wordpress content automatically to your facebook wall
+---------------------------------------------------------------
+
+Recently we needed to hookup a wordpress blog to facebook. There *was* a plugin
+for Wordpress that would do this but it seems to have broken recently so I've
+created this from scratch to make use of the new Facebook Graph API. You'll
+need to add a new application and allow that access to your chosen facebook account.
+
+This is an early version (we're talking 0.1 here!). For now it will post to
+your wall *for every update/published* post. I expect to add some sort of
+checkbox to the post interface to toggle this on a per-post basis.
+
+Requirements
+------------
+
+This plugin makes use of cURL, which is often installed and activated on even
+shared hosting. As long as you can run wordpress you can probably run this. It
+has been tested with Wordpress 3.0.1 but should work with the >2.7 branch also.
+
+Installation
+------------
+
+    1. Copy the wp-twacepost folder to your wordpress plugins directory
+    2. Activate the plugin
+    3. Update the settings with the access_token to allow posting
+
+Getting an access token
+-----------------------
+
+You'll need to first register a new application. We'll use this app to associate
+an access token which has authorization to post to your wall. In the URL below
+replace {APP_ID} with the application ID and {WP_URL} with your blog's URL.
+
+https://graph.facebook.com/oauth/authorize?type=user_agent
+    &client_id={APP_ID}&redirect_uri=http%3A%2F%2F{WP_URL}
+    &scope=publish_stream,offline_access
+
+By requesting "offline_access" we should only need to do this the once. If facebook
+is happy it will redirect you to your blog. In the URL query string you'll
+see "access_token=XXX". Copy that and update Twacepost's settings.
+
+Now when you save/update a post it should automatically post to your wall complete
+with permalink and your blog name.
+

@@ -75,7 +75,7 @@ function pushToTwitter() {
 # Hook into the publish action and push our post data to facebook
 # and twitter. If we use save_post then it ends up pushing several
 # times at once
-#add_action('publish_post', 'pushToFacebook');
+add_action('publish_post', 'pushToFacebook');
 add_action('publish_post', 'pushToTwitter');
 
 # Hook into the admin menus

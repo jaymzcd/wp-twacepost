@@ -11,12 +11,20 @@ Author URI: http://www.jaymz.eu
 # http://developers.facebook.com/docs/reference/api/post
 define('FB_POST_URL', 'https://graph.facebook.com/me/feed');
 
-function pushToFacebook() {
+# Twitter oAuth library - cheers for disabling basic support 3 days before
+# I had to do this. Bah. Library lives here: http://github.com/jmathai/twitter-async
+include 'lib/EpiCurl.php';
+include 'lib/EpiOAuth.php';
+include 'lib/EpiTwitter.php';
 
+function grabPost() {
     # Grab the post and blog data we'll need to populate the
-    # request and fill in the data for Facebook to use
     global $post;
-    $postData = get_post($post->ID);
+    return get_post($post->ID);
+}
+
+function pushToFacebook() {
+    $postData = grabPost();
     $blogName = get_bloginfo("name");
     $blogURL = get_bloginfo("url");
     $postURL = get_permalink($postData->ID);
@@ -52,9 +60,30 @@ function pushToFacebook() {
     $response = curl_exec($ch);
 }
 
+function pushToTwitter() {
+    $post = grabPost();
+
+    # These belong to your app and will be listed on its screen just after you
+    # register for it at twitter.com/apps/new/
+    $consumer_key = '4mRCG4ev4RmTJDiJt5Jqg';
+    $consumer_secret = 'mNnbAxQV3zb4g2NlorjCD4akGNWidIliHZaXa7yaWs';
+
+    # You can get this from dev.twitter.com/apps/ and then click through to your
+    # app you've registered above and on the right you'll see "my accesst token"
+    $atoken = '11839172-KW9Inh9iD07XTPKskCXzELQms3WDctnJ1uoyUgFwP';
+    $asecret = '7OO5lrN1gWWIoq0Jj8UByBEA7yn3O88JdUYMUZnS5I';
+
+    # Make our post to twitter based on our post content
+    $twitterObj = new EpiTwitter($consumer_key, $consumer_secret, $atoken, $asecret);
+    $twitterObj->useAsynchronous();
+    $status = $twitterObj->post('/statuses/update.json', array('status' => $post->post_title));
+}
+
 # Hook into the publish action and push our post data to facebook
-# If we use save_post then it ends up pushing several times at once
-add_action('publish_post', 'pushToFacebook');
+# and twitter. If we use save_post then it ends up pushing several
+# times at once
+#add_action('publish_post', 'pushToFacebook');
+add_action('publish_post', 'pushToTwitter');
 
 # Hook into the admin menus
 add_action('admin_menu', 'twace_create_menu');

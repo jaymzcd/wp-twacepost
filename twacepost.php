@@ -17,6 +17,9 @@ include 'lib/EpiCurl.php';
 include 'lib/EpiOAuth.php';
 include 'lib/EpiTwitter.php';
 
+# Our keys/tokens for twitters oAuth
+include_once('twitter_keys.php');
+
 function grabPost() {
     # Grab the post and blog data we'll need to populate the
     global $post;
@@ -63,18 +66,8 @@ function pushToFacebook() {
 function pushToTwitter() {
     $post = grabPost();
 
-    # These belong to your app and will be listed on its screen just after you
-    # register for it at twitter.com/apps/new/
-    $consumer_key = '4mRCG4ev4RmTJDiJt5Jqg';
-    $consumer_secret = 'mNnbAxQV3zb4g2NlorjCD4akGNWidIliHZaXa7yaWs';
-
-    # You can get this from dev.twitter.com/apps/ and then click through to your
-    # app you've registered above and on the right you'll see "my accesst token"
-    $atoken = '11839172-KW9Inh9iD07XTPKskCXzELQms3WDctnJ1uoyUgFwP';
-    $asecret = '7OO5lrN1gWWIoq0Jj8UByBEA7yn3O88JdUYMUZnS5I';
-
     # Make our post to twitter based on our post content
-    $twitterObj = new EpiTwitter($consumer_key, $consumer_secret, $atoken, $asecret);
+    $twitterObj = new EpiTwitter(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_SECRET);
     $twitterObj->useAsynchronous();
     $status = $twitterObj->post('/statuses/update.json', array('status' => $post->post_title));
 }

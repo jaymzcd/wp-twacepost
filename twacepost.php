@@ -58,6 +58,9 @@ function pushToFacebook() {
     curl_setopt($ch, CURLOPT_POSTFIELDS, $postDataStr);
 
     $response = curl_exec($ch);
+    $f = fopen('/tmp/debug.txt', 'w');
+    fwrite($f, $response);
+    fclose($f);
 }
 
 function pushToTwitter() {

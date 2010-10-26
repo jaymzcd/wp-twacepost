@@ -1,8 +1,6 @@
-TWACEPOST
-=========
+# TWACEPOST
 
-Post your wordpress content automatically to your facebook wall
----------------------------------------------------------------
+## Post your wordpress content automatically to your facebook wall
 
 Recently we needed to hookup a wordpress blog to facebook. There *was* a plugin
 for Wordpress that would do this but it seems to have broken recently so I've
@@ -13,23 +11,20 @@ This is an early version (we're talking 0.1 here!). For now it will post to
 your wall *for every update/published* post. I expect to add some sort of
 checkbox to the post interface to toggle this on a per-post basis.
 
-Requirements
-------------
+### Requirements
 
 This plugin makes use of cURL, which is often installed and activated on even
 shared hosting. As long as you can run wordpress you can probably run this. It
 has been tested with Wordpress 3.0.1 but should work with the >2.7 branch also.
 
-Installation
-------------
+###  Installation
 
     1. Copy the wp-twacepost folder to your wordpress plugins directory
     2. Activate the plugin
     3. Register a new application on facebook & twitter for your blog
     4. Update the settings with the token, key & secrets for both
 
-Getting an access token for a Facebook *Profile*
-------------------------------------------------
+### Getting an access token for a Facebook *Profile*
 
 You'll need to first register a new application. We'll use this app to associate
 an access token which has authorization to post to your wall. In the URL below
@@ -46,8 +41,7 @@ see "access_token=XXX". Copy that and update Twacepost's settings.
 Now when you save/update a post it should automatically post to your wall complete
 with permalink and your blog name.
 
-Getting an access token for a Facebook *Page*
----------------------------------------------
+### Getting an access token for a Facebook *Page*
 
 If you want to use this plugin to push content to a page you are an admin for then
 you'll need to add "manage_pages" to the authorization url above. Facebook will
@@ -73,8 +67,7 @@ sort of like:
 Use the access token listed in there and then when saving posts wordpress will
 push it to *your page* and not your account.
 
-Getting an access token for Twitter
-------------------------------------
+### Getting an access token for Twitter
 
 The consumer keys you get when you've registered a new app, they'll be listed on
 the page for the your application data. To get an access token go to the [dev site

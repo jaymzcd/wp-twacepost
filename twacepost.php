@@ -3,13 +3,14 @@
 Plugin Name: Twacepost
 Plugin URI: http://www.jaymz.eu/twacepost/
 Description: A plugin to post content to twitter & facebook on saving.
-Version: 0.1
+Version: 0.2
 Author: Jaymz Campbell
 Author URI: http://www.jaymz.eu
 */
 
 # http://developers.facebook.com/docs/reference/api/post
 define('FB_POST_URL', 'https://graph.facebook.com/me/feed');
+define('BITLY_SHORTEN_URL', 'http://api.bit.ly/v3/shorten');
 
 # Twitter oAuth library - cheers for disabling basic support 3 days before
 # I had to do this. Bah. Library lives here: http://github.com/jmathai/twitter-async
@@ -99,6 +100,8 @@ function register_twacesettings() {
     register_setting('twace-settings', 'tw_access_secret');
     register_setting('twace-settings', 'tw_consumer_key');
     register_setting('twace-settings', 'tw_consumer_secret');
+    register_setting('twace-settings', 'bitly_login');
+    register_setting('twace-settings', 'bitly_api_key');
 }
 
 function twace_settings_page() {
@@ -127,6 +130,14 @@ function twace_settings_page() {
             <tr valign="top">
                 <th scope="row">Twitter Acess Secret</th>
                 <td><input type="text" name="tw_access_secret" value="<?php echo get_option('tw_access_secret'); ?>" /></td>
+            </tr>
+            <tr valign="top">
+                <th scope="row">Bit.ly Username (login)</th>
+                <td><input type="text" name="bitly_login" value="<?php echo get_option('bitly_login'); ?>" /></td>
+            </tr>
+            <tr valign="top">
+                <th scope="row">Bit.ly API Key</th>
+                <td><input type="text" name="bitly_api_key" value="<?php echo get_option('bitly_api_key'); ?>" /></td>
             </tr>
         </table>
         <p class="submit">

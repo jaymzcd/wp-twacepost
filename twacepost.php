@@ -17,9 +17,6 @@ include 'lib/EpiCurl.php';
 include 'lib/EpiOAuth.php';
 include 'lib/EpiTwitter.php';
 
-# Our keys/tokens for twitters oAuth
-include_once('twitter_keys.php');
-
 function grabPost() {
     # Grab the post and blog data we'll need to populate the
     global $post;
@@ -66,8 +63,13 @@ function pushToFacebook() {
 function pushToTwitter() {
     $post = grabPost();
 
+    $ckey = get_option('tw_consumer_key');
+    $csecret = get_option('tw_consumer_secret');
+    $atoken = get_option('tw_access_token');
+    $asecret = get_option('tw_access_secret');
+
     # Make our post to twitter based on our post content
-    $twitterObj = new EpiTwitter(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_SECRET);
+    $twitterObj = new EpiTwitter($ckey, $csecret, $atoken, $asecret);
     $twitterObj->useAsynchronous();
     $status = $twitterObj->post('/statuses/update.json', array('status' => $post->post_title));
 }
@@ -90,6 +92,10 @@ function twace_create_menu() {
 
 function register_twacesettings() {
     register_setting('twace-settings', 'fb_access_token');
+    register_setting('twace-settings', 'tw_access_token');
+    register_setting('twace-settings', 'tw_access_secret');
+    register_setting('twace-settings', 'tw_consumer_key');
+    register_setting('twace-settings', 'tw_consumer_secret');
 }
 
 function twace_settings_page() {
@@ -103,6 +109,22 @@ function twace_settings_page() {
                 <th scope="row">Facebook Access Token</th>
                 <td><input type="text" name="fb_access_token" value="<?php echo get_option('fb_access_token'); ?>" /></td>
             </tr>
+            <tr valign="top">
+                <th scope="row">Twitter Consumer Key</th>
+                <td><input type="text" name="tw_consumer_key" value="<?php echo get_option('tw_consumer_key'); ?>" /></td>
+            </tr>
+            <tr valign="top">
+                <th scope="row">Twitter Consumer Secret</th>
+                <td><input type="text" name="tw_consumer_secret" value="<?php echo get_option('tw_consumer_secret'); ?>" /></td>
+            </tr>
+            <tr valign="top">
+                <th scope="row">Twitter Acess Token</th>
+                <td><input type="text" name="tw_access_token" value="<?php echo get_option('tw_access_token'); ?>" /></td>
+            </tr>
+            <tr valign="top">
+                <th scope="row">Twitter Acess Secret</th>
+                <td><input type="text" name="tw_access_secret" value="<?php echo get_option('tw_access_secret'); ?>" /></td>
+            </tr>
         </table>
         <p class="submit">
             <input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
@@ -110,4 +132,3 @@ function twace_settings_page() {
     </form>
     </div>
 <?php } ?>
-

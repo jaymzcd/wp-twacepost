@@ -23,12 +23,19 @@ For the configuration, you'll need:
     * A Twitter application
     * Bit.ly API key
 
+You also need the [twitter-async](http://github.com/jmathai/twitter-async) library
+from Jaisen Mathai to handle the Twitter oAuth stuff. I have this within a folder
+called *lib*. I haven't checked that in here, you'll need to grab that
+separately. 
+
 ### Installation
 
-    1. Copy the wp-twacepost folder to your wordpress plugins directory
-    2. Activate the plugin
-    3. Register a new application on facebook & twitter for your blog
-    4. Update the settings with the token, key & secrets for both
+    1. Grab the Epi*.php files from the twitter-async project
+    2. Place the files in a folder called lib
+    3. Copy the wp-twacepost folder to your wordpress plugins directory
+    4. Activate the plugin
+    5. Register a new application on facebook & twitter for your blog
+    6. Update the settings with the token, key & secrets for both
 
 ### Getting an access token for a Facebook *Profile*
 

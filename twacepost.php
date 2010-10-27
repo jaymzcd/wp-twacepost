@@ -10,7 +10,7 @@ Author URI: http://www.jaymz.eu
 
 # http://developers.facebook.com/docs/reference/api/post
 define('FB_POST_URL', 'https://graph.facebook.com/me/feed');
-define('BITLY_SHORTEN_URL', 'http://api.bit.ly/v3/shorten');
+define('BITLY_SHORTEN_URL', 'http://api.bit.ly/v3/shorten?');
 
 # Twitter oAuth library - cheers for disabling basic support 3 days before
 # I had to do this. Bah. Library lives here: http://github.com/jmathai/twitter-async
@@ -57,15 +57,40 @@ function pushToFacebook() {
     $postDataStr = http_build_query($postVars);
 
     curl_setopt($ch, CURLOPT_POSTFIELDS, $postDataStr);
+    $response = curl_exec($ch);
+}
+
+function shortenUrl($input_url) {
+    # Uses the bit.ly REST api to request a shortened url for out post
+    # permalink for our tweet
+    $urlVars = array(
+        'login' => get_option('bitly_login'),
+        'apiKey' => get_option('bitly_api_key'),
+        'longUrl' => $input_url
+    );
+    $shortenStr = http_build_query($urlVars);
+
+    $ch = curl_init(BITLY_SHORTEN_URL.$shortenStr);
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 2); # 2sec timeout
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); # get the response data
 
     $response = curl_exec($ch);
-    $f = fopen('/tmp/debug.txt', 'w');
-    fwrite($f, $response);
-    fclose($f);
+    $bitlyData = json_decode($response, True);
+    $url = $bitlyData['data']['url'];
+    return $url;
+}
+
+function trimPostForTwitter($post, $url) {
+    # Takes in some post info and the bitly link and returns a twitter
+    # friendly sized tweet for posting
+
+    return substr($post->post_title, 0, 122).' '.$url;
 }
 
 function pushToTwitter() {
     $post = grabPost();
+
+    $shortLink = shortenUrl(get_permalink($post->ID));
 
     $ckey = get_option('tw_consumer_key');
     $csecret = get_option('tw_consumer_secret');
@@ -75,7 +100,9 @@ function pushToTwitter() {
     # Make our post to twitter based on our post content
     $twitterObj = new EpiTwitter($ckey, $csecret, $atoken, $asecret);
     $twitterObj->useAsynchronous();
-    $status = $twitterObj->post('/statuses/update.json', array('status' => $post->post_title));
+    $status = $twitterObj->post('/statuses/update.json',
+        array('status' => trimPostForTwitter($post, $shortLink))
+    );
 }
 
 # Hook into the publish action and push our post data to facebook

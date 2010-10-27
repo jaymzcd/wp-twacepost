@@ -7,7 +7,7 @@ for Wordpress that would do this but it seems to have broken recently so I've
 created this from scratch to make use of the new Facebook Graph API. You'll
 need to add a new application and allow that access to your chosen facebook account.
 
-This is an early version (we're talking 0.1 here!). For now it will post to
+This is an early version (we're talking 0.2 here!). For now it will post to
 your wall *for every update/published* post. I expect to add some sort of
 checkbox to the post interface to toggle this on a per-post basis.
 
@@ -17,7 +17,13 @@ This plugin makes use of cURL, which is often installed and activated on even
 shared hosting. As long as you can run wordpress you can probably run this. It
 has been tested with Wordpress 3.0.1 but should work with the >2.7 branch also.
 
-###  Installation
+For the configuration, you'll need:
+
+    * A Facebook application
+    * A Twitter application
+    * Bit.ly API key
+
+### Installation
 
     1. Copy the wp-twacepost folder to your wordpress plugins directory
     2. Activate the plugin
@@ -74,3 +80,9 @@ the page for the your application data. To get an access token go to the [dev si
 on twitter](http://dev.twitter.com/apps) for apps. Click through to your newly
 created app and on the right hand side there's a section for *My access token*.
 If you click through there you'll see the token & secret that you'll need.
+
+### Getting an API key from Bit.ly
+
+This one is very easy - just register a new account at [bit.ly](http://bit.ly/a/signup)
+and then make your way to the [account section](http://bit.ly/a/account), you'll
+see your API key in one of the blocks of information.

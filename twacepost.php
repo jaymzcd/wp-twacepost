@@ -10,6 +10,7 @@ Author URI: http://www.jaymz.eu
 
 # http://developers.facebook.com/docs/reference/api/post
 define('FB_POST_URL', 'https://graph.facebook.com/me/feed');
+# http://code.google.com/p/bitly-api/wiki/ApiDocumentation#/v3/shorten
 define('BITLY_SHORTEN_URL', 'http://api.bit.ly/v3/shorten?');
 
 # Twitter oAuth library - cheers for disabling basic support 3 days before
